@@ -18,6 +18,8 @@ data = {
 }
 
 df = pd.DataFrame(data)
+df.to_csv("student_results.csv", index=False)
+print("Dataset saved as student_results.csv")
 
 # Create result
 df["result"] = (
