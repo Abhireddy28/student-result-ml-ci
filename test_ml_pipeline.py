@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LogisticRegression
 
 
 MODEL_FILE = "student_result_model.pkl"
@@ -20,7 +20,8 @@ def test_metrics_file_exists():
 
 def test_model_loads():
     model = joblib.load(MODEL_FILE)
-    assert model is None
+    assert model is not None
+    assert isinstance(model, LogisticRegression)
 
 
 def test_metrics_load():
