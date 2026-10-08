@@ -27,6 +27,10 @@ jobs:
       - name: Train ML model
         run: |
           python train_model.py
+      - name: Check ML quality gate
+        run: |
+          python quality_gate.py
+          
 
       - name: Run automated tests
         run: |
