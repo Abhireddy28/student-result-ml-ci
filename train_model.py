@@ -59,7 +59,7 @@ print(cm)
 # Save model
 joblib.dump(model, "student_result_model.pkl")
 
-# Save metrics as JSON (needed by quality_gate.py)
+# Save metrics as JSON (required by quality_gate.py)
 metrics = {
     "accuracy": float(accuracy),
     "training_records": len(X_train),
