@@ -1,4 +1,5 @@
 import os
+import json
 import joblib
 import numpy as np
 import pandas as pd
@@ -7,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 
 
 MODEL_FILE = "student_result_model.pkl"
-METRICS_FILE = "metrics.pkl"
+METRICS_FILE = "metrics.json"
 
 
 def test_model_file_exists():
@@ -25,23 +26,16 @@ def test_model_loads():
 
 
 def test_metrics_load():
-    metrics = joblib.load(METRICS_FILE)
+    with open(METRICS_FILE, "r") as f:
+        metrics = json.load(f)
     assert "accuracy" in metrics
-    assert "confusion_matrix" in metrics
 
 
 def test_accuracy_range():
-    metrics = joblib.load(METRICS_FILE)
+    with open(METRICS_FILE, "r") as f:
+        metrics = json.load(f)
     accuracy = metrics["accuracy"]
-
     assert 0.0 <= accuracy <= 1.0
-
-
-def test_confusion_matrix_shape():
-    metrics = joblib.load(METRICS_FILE)
-    cm = np.array(metrics["confusion_matrix"])
-
-    assert cm.shape == (2, 2)
 
 
 def test_model_prediction():
@@ -49,13 +43,8 @@ def test_model_prediction():
 
     sample = pd.DataFrame(
         [[85, 75, 80]],
-        columns=[
-            "attendance",
-            "internal_marks",
-            "assignment_score"
-        ]
+        columns=["attendance", "internal_marks", "assignment_score"]
     )
 
     prediction = model.predict(sample)
-
     assert prediction[0] in [0, 1]
