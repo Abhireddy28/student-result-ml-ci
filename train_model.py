@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import joblib
+import json
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -58,12 +59,14 @@ print(cm)
 # Save model
 joblib.dump(model, "student_result_model.pkl")
 
-# Save metrics
+# Save metrics as JSON (needed by quality_gate.py)
 metrics = {
-    "accuracy": accuracy,
-    "confusion_matrix": cm.tolist()
+    "accuracy": float(accuracy),
+    "training_records": len(X_train),
+    "testing_records": len(X_test)
 }
 
-joblib.dump(metrics, "metrics.pkl")
+with open("metrics.json", "w") as f:
+    json.dump(metrics, f, indent=4)
 
 print("Model and metrics saved successfully.")
