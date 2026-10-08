@@ -2,11 +2,16 @@ name: Student Result ML CI
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  ml-ci:
+  train-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,18 +23,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install ML dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Train ML model
-        run: |
-          python train_model.py
-      
-          
+      - name: Train student result model
+        run: python train_model.py
 
-      - name: Run automated tests
-        run: |
-          pytest -v test_ml_pipeline.py
+      - name: Check ML quality gate
+        run: python quality_gate.py
+
+      - name: Run automated ML tests
+        run: pytest -v test_ml_pipeline.py
