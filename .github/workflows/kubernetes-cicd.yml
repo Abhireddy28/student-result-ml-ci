@@ -107,9 +107,7 @@ jobs:
 
       - name: Verify health
         run: |
-          $url = (minikube service student-result-ml-service --url)
-          Write-Host "Service URL: $url"
-          Invoke-RestMethod -Uri "$url/"
+          kubectl exec deploy/student-result-ml -- python -c "import urllib.request; print(urllib.request.urlopen('http://localhost:5000/', timeout=10).read().decode())"
 
       - name: Show final status
         run: |
