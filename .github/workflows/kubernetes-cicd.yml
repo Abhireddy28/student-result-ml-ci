@@ -107,7 +107,7 @@ jobs:
 
       - name: Verify health
         run: |
-          kubectl exec deploy/student-result-ml -- python -c "import urllib.request; print(urllib.request.urlopen('http://localhost:5000/', timeout=10).read().decode())"
+          kubectl exec deploy/student-result-ml -- python3 -c "import urllib.request; print(urllib.request.urlopen('http://localhost:5000/', timeout=10).read().decode())"
 
       - name: Show final status
         run: |
